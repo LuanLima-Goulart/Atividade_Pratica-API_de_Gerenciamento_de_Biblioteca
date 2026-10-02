@@ -10,7 +10,8 @@ const buscarTodos = async () => {
 
 const buscarId = async (id) => {
     const [autores] = await db.query(
-        "SELECT * FROM Autores WHERE id = ?"
+        "SELECT * FROM Autores WHERE id = ?",
+        [id]
     );
 
     return autores[0];
@@ -31,7 +32,7 @@ const criar = async (nome_completo, nacionalidade, data_nascimento) => {
 };
 
 const editar = async (id, nome_completo, nacionalidade, data_nascimento) => {
-    const autores = await db.query(
+    await db.query(
         "UPDATE Autores SET nome_completo=?, nacionalidade=?, data_nascimento=? WHERE id=?",
         [nome_completo, nacionalidade, data_nascimento, id]
     );
@@ -52,10 +53,23 @@ const deletar = async (id) => {
     return resultado.affectedRows;
 };
 
+const buscarLivrosPorAutor = async (autorId) => {
+    const [livros] = await db.query(
+        `SELECT l.* FROM Livros l
+         INNER JOIN Autores_Livros al ON l.id = al.livros_id
+         WHERE al.autores_id = ?;`,
+        [autorId]
+    );
+
+    return livros;
+};
+
 module.exports = {
     buscarTodos,
     buscarId,
     criar,
     editar,
-    deletar
+    deletar,
+    buscarLivrosPorAutor,
+    buscarLivros: buscarLivrosPorAutor
 };

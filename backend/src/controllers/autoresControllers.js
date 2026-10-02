@@ -45,7 +45,7 @@ const deletarAutor = async (req, res) => {
     const id = req.params.id;
     const autorDeletar = await listaAutores.buscarId(id);
 
-    if(autorDeletar === -1) {
+    if(!autorDeletar || autorDeletar === -1) {
         return res.status(404).json({
             mensagem: "Autor não encontrado!"
         });
