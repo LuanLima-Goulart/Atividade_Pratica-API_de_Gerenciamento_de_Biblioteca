@@ -10,26 +10,11 @@ API RESTful para controle e administração de biblioteca desenvolvida em **Node
 backend/
 ├── src/
 │   ├── config/
-│   │   ├── db.js                   # Conexão com o banco (Pool MySQL2)
-│   │   └── script.sql              # Script DDL e dados iniciais (seeds)
+│   │   ├── db.js                  # Conexão com o banco (Pool MySQL2)
+│   │   └── script.sql             # Script DDL e dados iniciais (seeds)
 │   ├── controllers/               # Lógica de controle e respostas HTTP
-│   │   ├── autoresControllers.js
-│   │   ├── emprestimosControllers.js
-│   │   ├── generosControllers.js
-│   │   ├── livrosControllers.js
-│   │   └── usuariosControllers.js
 │   ├── models/                    # Camada de acesso a dados (SQL Queries)
-│   │   ├── autoresModels.js
-│   │   ├── emprestimosModels.js
-│   │   ├── generosModels.js
-│   │   ├── livrosModels.js
-│   │   └── usuariosModels.js
 │   ├── routes/                    # Definição e roteamento dos endpoints
-│   │   ├── autoresRoutes.js
-│   │   ├── emprestimosRoutes.js
-│   │   ├── generosRoutes.js
-│   │   ├── livrosRoutes.js
-│   │   └── usuariosRoutes.js
 │   ├── app.js                     # Configuração do Express e middlewares
 │   └── server.js                  # Inicialização do servidor
 ├── .env.example                   # Modelo das variáveis de ambiente
@@ -47,10 +32,10 @@ backend/
   <img src="https://img.shields.io/badge/Nodemon-76D04B?style=for-the-badge&logo=nodemon&logoColor=white" alt="Nodemon" />
 </p>
 
-* **Node.js & Express** — Plataforma e framework para construção da API RESTful.
-* **MySQL & mysql2** — Banco de dados relacional e driver com suporte a Promises.
-* **dotenv** — Gerenciamento de variáveis de ambiente.
-* **Nodemon** — Reinicialização automática em ambiente de desenvolvimento.
+* **Node.js v24.11.1 & Express v5.2.1** — Plataforma e framework para construção da API RESTful.
+* **MySQL & mysql2 v3.24.5** — Banco de dados relacional e driver com suporte a Promises.
+* **dotenv v18.0.4** — Gerenciamento de variáveis de ambiente.
+* **Nodemon v3.1.14** — Reinicialização automática em ambiente de desenvolvimento.
 
 ---
 
