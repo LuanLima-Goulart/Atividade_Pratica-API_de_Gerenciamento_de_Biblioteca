@@ -80,12 +80,12 @@ backend/
    ```
    Preencha os valores de acordo com seu ambiente:
    ```env
-   DB_HOST=localhost
-   DB_USER=root
-   DB_PASSWORD=sua_senha
-   DB_PORT=3306
-   DB_NAME=Biblioteca
-   API_PORT=3000
+   DB_HOST=
+   DB_USER=
+   DB_PASSWORD=
+   DB_PORT=
+   DB_NAME=
+   API_PORT=
    ```
 
 4. **Inicialize o Banco de Dados:**
