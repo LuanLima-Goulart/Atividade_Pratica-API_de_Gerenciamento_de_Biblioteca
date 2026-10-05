@@ -99,7 +99,7 @@ backend/
    ```bash
    npm start
    ```
-   O servidor estará disponível em: `http://localhost:3000`.
+   O servidor estará disponível em: `http://localhost:${API_PORT}`.
 
 ---
 
