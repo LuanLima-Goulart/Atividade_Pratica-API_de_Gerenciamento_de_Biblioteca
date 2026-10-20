@@ -89,12 +89,12 @@ async function criarUsuario(req, res) {
         const senhaEfetiva = senha || "123456";
         const { salt, hash } = await gerarHashSenha(senhaEfetiva);
 
-        const { iv, tag, valorCriptografado } = criptografar(cpf);
+        const { iv: cpfIV, tag: cpfTag, valorCriptografado: cpfCriptografado } = criptografar(cpf);
 
         const novoUsuario = await usuariosModel.criar({
-            cpf: valorCriptografado, 
-            cpfIv: iv, 
-            cpfTag: tag, 
+            cpf: cpfCriptografado, 
+            cpfIv: cpfIV, 
+            cpfTag: cpfTag, 
             nomeCompleto: nome, 
             dataAniversario: dataNasc, 
             email, 

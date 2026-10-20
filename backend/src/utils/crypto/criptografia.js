@@ -22,8 +22,7 @@ function criptografar(valor) {
     return {
         iv,
         tag,
-        valorCriptografado,
-        cpfCriptografado: valorCriptografado
+        valorCriptografado
     };
 }
 
