@@ -1,61 +1,85 @@
 const listaGeneros = require("../models/generosModels");
 
 const listarGeneros = async (req, res) => {
-    const generos = await listaGeneros.buscarTodos();
-
-    res.json(generos);
+    try {
+        const generos = await listaGeneros.buscarTodos();
+        res.json(generos);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ mensagem: "Erro ao buscar gêneros." });
+    }
 };
 
 const pesquisarGenero = async (req, res) => {
-    const id = req.params.id;
-    const genero = await listaGeneros.buscarId(id);
+    try {
+        const id = req.params.id;
+        const genero = await listaGeneros.buscarId(id);
 
-    if(!genero) {
-        return res.status(404).json({
-            mensagem: "Gênero não encontrado!"
-        });
+        if(!genero) {
+            return res.status(404).json({
+                mensagem: "Gênero não encontrado!"
+            });
+        }
+
+        res.json(genero);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ mensagem: "Erro ao buscar gênero." });
     }
-
-    res.json(genero);
 };
 
 const criarGenero = async (req, res) => {
-    const { nome } = req.body;
-    const novoGenero = await listaGeneros.criar(nome);
+    try {
+        const { nome } = req.body;
+        const novoGenero = await listaGeneros.criar(nome);
 
-    res.status(201).json(novoGenero);
+        res.status(201).json(novoGenero);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ mensagem: "Erro ao criar gênero." });
+    }
 };
 
 const atualizarGenero = async (req, res) => {
-    const id = req.params.id;
-    const { nome } = req.body;
-    const genero = await listaGeneros.buscarId(id);
+    try {
+        const id = req.params.id;
+        const { nome } = req.body;
+        const genero = await listaGeneros.buscarId(id);
 
-    if(!genero) {
-        return res.status(404).json({
-            mensagem: "Gênero não encontrado!"
-        });
+        if(!genero) {
+            return res.status(404).json({
+                mensagem: "Gênero não encontrado!"
+            });
+        }
+
+        const generoAtualizado = await listaGeneros.editar(id, nome);
+        res.json(generoAtualizado);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ mensagem: "Erro ao atualizar gênero." });
     }
-
-    const generoAtualizado = await listaGeneros.editar(id, nome);
-    res.json(generoAtualizado);
 };
 
 const deletarGenero = async (req, res) => {
-    const id = req.params.id;
-    const generoDeletar = await listaGeneros.buscarId(id);
+    try {
+        const id = req.params.id;
+        const generoDeletar = await listaGeneros.buscarId(id);
 
-    if(!generoDeletar || generoDeletar === -1) {
-        return res.status(404).json({
-            mensagem: "Gênero não encontrado!"
+        if(!generoDeletar || generoDeletar === -1) {
+            return res.status(404).json({
+                mensagem: "Gênero não encontrado!"
+            });
+        }
+
+        await listaGeneros.deletar(id);
+
+        res.json({
+            mensagem: "Gênero deletado!"
         });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ mensagem: "Erro ao deletar gênero." });
     }
-
-    await listaGeneros.deletar(id);
-
-    res.json({
-        mensagem: "Gênero deletado!"
-    });
 };
 
 module.exports = {

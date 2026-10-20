@@ -18,15 +18,15 @@ const buscarId = async (id) => {
 };
 
 const criar = async (nome) => {
-    const generos = await db.query(
+    const [resultado] = await db.query(
         "INSERT INTO Generos (nome) VALUES (?);",
         [nome]
     );
 
     return {
-        id: generos.insertId,
+        id: resultado.insertId,
         nome
-    }
+    };
 };
 
 const editar = async (id, nome) => {
@@ -36,7 +36,7 @@ const editar = async (id, nome) => {
     );
 
     return {
-        id,
+        id: Number(id),
         nome
     };
 };

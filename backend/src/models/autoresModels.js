@@ -18,13 +18,13 @@ const buscarId = async (id) => {
 };
 
 const criar = async (nome_completo, nacionalidade, data_nascimento) => {
-    const autores = await db.query(
+    const [resultado] = await db.query(
         "INSERT INTO Autores (nome_completo, nacionalidade, data_nascimento) VALUES (?,?,?);",
         [nome_completo, nacionalidade, data_nascimento]
     );
 
     return {
-        id: autores.insertId,
+        id: resultado.insertId,
         nome_completo,
         nacionalidade,
         data_nascimento
@@ -38,6 +38,7 @@ const editar = async (id, nome_completo, nacionalidade, data_nascimento) => {
     );
 
     return {
+        id: Number(id),
         nome_completo,
         nacionalidade,
         data_nascimento

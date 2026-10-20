@@ -1,67 +1,106 @@
 const db = require("../config/db");
 
-const buscarTodos = async () => {
-    const [usuarios] = await db.query(
-        "SELECT * FROM Usuarios;"
-    );
+async function buscarTodos() {
+    const sql = `
+        SELECT id, nome_completo, cpf, cpf_iv, cpf_tag, email, telefone, data_nascimento 
+        FROM Usuarios;
+    `;
+    const [resultado] = await db.execute(sql);
 
-    return usuarios;
-};
+    return resultado;
+}
 
-const buscarId = async (id) => {
-    const [usuarios] = await db.query(
-        "SELECT * FROM Usuarios WHERE id = ?;",
-        [id]
-    );
+async function buscarPorId(id) {
+    const sql = `SELECT * FROM Usuarios WHERE id = ?;`;
+    const [resultado] = await db.execute(sql, [id]);
 
-    return usuarios[0];
-};
+    return resultado[0] || null;
+}
 
-const criar = async (nome_completo, cpf, email, telefone, data_nascimento) => {
-    const [resultado] = await db.query(
-        "INSERT INTO Usuarios (nome_completo, cpf, email, telefone, data_nascimento) VALUES (?, ?, ?, ?, ?);",
-        [nome_completo, cpf, email, telefone, data_nascimento]
-    );
+async function criar({ 
+    cpf, 
+    cpfIv, 
+    cpf_iv, 
+    cpfTag, 
+    cpf_tag, 
+    nomeCompleto, 
+    nome_completo, 
+    dataAniversario, 
+    data_nascimento, 
+    email, 
+    telefone, 
+    senhaHash, 
+    senha_hash, 
+    senhaSalt, 
+    senha_salt 
+}) {
+    const nome = nome_completo || nomeCompleto;
+    const dataNasc = data_nascimento || dataAniversario;
+    const iv = cpf_iv || cpfIv;
+    const tag = cpf_tag || cpfTag;
+    const hash = senha_hash || senhaHash;
+    const salt = senha_salt || senhaSalt;
+
+    const sql = `
+        INSERT INTO Usuarios (cpf, cpf_iv, cpf_tag, nome_completo, data_nascimento, email, telefone, senha_hash, senha_salt)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
+    `;
+    const [resultado] = await db.execute(sql, [
+        cpf, iv, tag, nome, dataNasc, email, telefone, hash, salt
+    ]);
 
     return {
         id: resultado.insertId,
-        nome_completo,
-        cpf,
+        nome_completo: nome,
         email,
         telefone,
-        data_nascimento
+        data_nascimento: dataNasc
     };
-};
+}
 
-const editar = async (id, nome_completo, cpf, email, telefone, data_nascimento) => {
-    await db.query(
-        "UPDATE Usuarios SET nome_completo=?, cpf=?, email=?, telefone=?, data_nascimento=? WHERE id=?;",
-        [nome_completo, cpf, email, telefone, data_nascimento, id]
-    );
+async function editar(id, { nome_completo, nomeCompleto, data_nascimento, dataAniversario, email, telefone, cpf, cpf_iv, cpf_tag, senha_hash, senha_salt }) {
+    const nome = nome_completo || nomeCompleto;
+    const dataNasc = data_nascimento || dataAniversario;
+
+    if (cpf && cpf_iv && cpf_tag && senha_hash && senha_salt) {
+        const sql = `
+            UPDATE Usuarios 
+            SET nome_completo = ?, data_nascimento = ?, email = ?, telefone = ?, cpf = ?, cpf_iv = ?, cpf_tag = ?, senha_hash = ?, senha_salt = ?
+            WHERE id = ?;
+        `;
+        await db.execute(sql, [nome, dataNasc, email, telefone, cpf, cpf_iv, cpf_tag, senha_hash, senha_salt, id]);
+    } else {
+        const sql = `
+            UPDATE Usuarios 
+            SET nome_completo = ?, data_nascimento = ?, email = ?, telefone = ?
+            WHERE id = ?;
+        `;
+        await db.execute(sql, [nome, dataNasc, email, telefone, id]);
+    }
 
     return {
-        id,
-        nome_completo,
-        cpf,
+        id: Number(id),
+        nome_completo: nome,
+        data_nascimento: dataNasc,
         email,
-        telefone,
-        data_nascimento
+        telefone
     };
-};
+}
 
-const deletar = async (id) => {
-    const [resultado] = await db.query(
-        "DELETE FROM Usuarios WHERE id=?;",
-        [id]
-    );
+async function excluir(id) {
+    const sql = `DELETE FROM Usuarios WHERE id = ?;`;
+    const [resultado] = await db.execute(sql, [id]);
 
     return resultado.affectedRows;
-};
+}
 
 module.exports = {
     buscarTodos,
-    buscarId,
+    buscarPorId,
+    buscarId: buscarPorId,
     criar,
     editar,
-    deletar
+    atualizar: editar,
+    excluir,
+    deletar: excluir
 };

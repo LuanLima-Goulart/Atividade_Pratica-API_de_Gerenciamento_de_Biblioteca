@@ -26,10 +26,14 @@ CREATE TABLE Generos (
 CREATE TABLE Usuarios (
     id INT PRIMARY KEY AUTO_INCREMENT,
     nome_completo VARCHAR(150) NOT NULL, 
-    cpf VARCHAR(20) UNIQUE NOT NULL,
+    cpf VARBINARY(32) NOT NULL,
+    cpf_iv BINARY(12) NOT NULL,
+    cpf_tag BINARY(16) NOT NULL,
     email VARCHAR(150) UNIQUE NOT NULL,
-    telefone VARCHAR(20) UNIQUE NOT NULL,
-    data_nascimento DATE NOT NULL
+    telefone BIGINT UNIQUE NOT NULL,
+    data_nascimento DATE NOT NULL,
+    senha_hash BINARY(64) NOT NULL,
+    senha_salt BINARY(16) NOT NULL
 );
 
 CREATE TABLE Autores_Livros (
@@ -79,11 +83,11 @@ INSERT INTO Generos (nome) VALUES
 ('Horror Tributário'),
 ('Tortura Psicológica (TI)');
 
--- 4. Inserindo Usuários (Os frequentadores assíduos que dão prejuízo)
-INSERT INTO Usuarios (nome_completo, cpf, email, telefone, data_nascimento) VALUES 
-('Zé do Calote', '171.171.171-71', 'nunca.devolvo@email.com', '(11) 90000-0000', '1999-09-09'),
-('Enzo Gabriel', '000.000.000-00', 'enzo.investidor.cripto@email.com', '(11) 91234-5678', '2010-05-15'),
-('Dev em Burnout da Silva', '404.404.404-04', 'socorro.deus@email.com', '(31) 94040-4040', '1990-12-31');
+-- 4. Inserindo Usuários
+INSERT INTO Usuarios (id, nome_completo, cpf, cpf_iv, cpf_tag, email, telefone, data_nascimento, senha_hash, senha_salt) VALUES
+(1, 'Zé do Calote', 0x6c9d5ab2423ccdac47345e8e0d5a, 0x3a2dcb2853db28863a8367b8, 0x5fec0b99571ab6b2eea64454ee3d173a, 'ze.calote@email.com', 11999991111, '1980-01-01', 0x63b91cd54bb2184c917f1084070ce443a982e9bff0fd59be30404114fc1b37a54f9cf158c4941dd3136feb7e63c12eef8489af36b726b51624867cb2a82037d5, 0x9c261d00f697f06e6a15ebe642f3c371),
+(2, 'Enzo do Instagram', 0x16f9185aa1a815bce0ad08592c49, 0xaeeb1daf13b5e3d57c98aa1a, 0xd677633e39fb2f0ed875a162e951b6b6, 'enzo.investidor@email.com', 11988882222, '2004-06-15', 0x2490ac9b90992464069fca2fc3f058ba6ca3073ee613b39bdaa6fb305a1b2b0335d8c0506bfede2c92588919f63c0203d13b6a19672cc25f6baae450c5340a03, 0xa0245b3d0d6a3413207febfb04dc98bd),
+(3, 'Desenvolvedor Cansado', 0x69d988d872f9906cac7340b01c57, 0x90953227e18892669e000338, 0x67305170b1aca0c4a9f371a31a52f6f7, 'dev.junior@email.com', 11977773333, '1998-12-05', 0x53d058d46d66d9035b12ffbae29769e83c4a8eb3a4d97bf361d9d6a082a560f6e6e1c6f7e9b6ce43d323a1c60d2164c8f8dbc29792108da0fae5619b53664683, 0x5b367691bf0dcac63c152cb012e99ce0);
 
 -- 5. Relação Autores x Livros
 INSERT INTO Autores_Livros (autores_id, livros_id) VALUES 
