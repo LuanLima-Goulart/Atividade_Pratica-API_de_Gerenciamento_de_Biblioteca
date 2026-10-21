@@ -2,7 +2,19 @@ const db = require("../config/db");
 
 const buscarTodos = async () => {
     const [emprestimos] = await db.query(
-        "SELECT * FROM Emprestimos;"
+        `SELECT
+            e.id AS id_Emprestimos,
+            u.nome_completo AS nome_Usuarios,
+            l.título AS nome_Livros,
+            GROUP_CONCAT(a.nome_completo SEPARATOR ', ') AS nome_Autores,
+            e.data_emprestimo, 
+            e.data_devolucao
+        FROM Emprestimos e
+        INNER JOIN Usuarios u ON e.usuarios_id = u.id
+        INNER JOIN Livros l ON e.livros_id = l.id
+        LEFT JOIN Autores_Livros al ON l.id = al.livros_id
+        LEFT JOIN Autores a ON al.autores_id = a.id
+        GROUP BY e.id, u.nome_completo, l.título, e.data_emprestimo, e.data_devolucao;`
     );
 
     return emprestimos;
@@ -10,7 +22,20 @@ const buscarTodos = async () => {
 
 const buscarId = async (id) => {
     const [emprestimos] = await db.query(
-        "SELECT * FROM Emprestimos WHERE id = ?;",
+        `SELECT
+            e.id AS id_Emprestimos,
+            u.nome_completo AS nome_Usuarios,
+            l.título AS nome_Livros,
+            GROUP_CONCAT(a.nome_completo SEPARATOR ', ') AS nome_Autores,
+            e.data_emprestimo,
+            e.data_devolucao
+        FROM Emprestimos e
+        INNER JOIN Usuarios u ON e.usuarios_id = u.id
+        INNER JOIN Livros l ON e.livros_id = l.id
+        LEFT JOIN Autores_Livros al ON l.id = al.livros_id
+        LEFT JOIN Autores a ON al.autores_id = a.id
+        WHERE e.id = ?
+        GROUP BY e.id, u.nome_completo, l.título, e.data_emprestimo, e.data_devolucao;`,
         [id]
     );
 
