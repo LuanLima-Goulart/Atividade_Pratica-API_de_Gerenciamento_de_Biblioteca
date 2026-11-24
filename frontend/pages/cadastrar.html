@@ -6,8 +6,45 @@
     <title>Cadastrar</title>
 </head>
 <body>
-    <header></header>
-    <main></main>
+    <header>
+        <section class="cadastreMensagem">
+            <h1>Cadastre-se no Foda-se e seja feliz!</h1>
+            <h2>Use suas informações!</h2>
+        </section>
+    </header>
+    <main>
+        <section class="informacoesCadastro">
+            <label for="nomeCompleto">Nome Completo</label>
+            <br>
+            <input id="nomeCompleto" type="text" placeholder="Escreva seu nome completo:" required>
+            <br>
+            <label for="emailCadastro">E-mail</label>
+            <br>
+            <input id="emailCadastro" type="email" placeholder="Escreva seu E-mail:" required>
+            <br>
+            <label for="senhaCadastro">Senha</label>
+            <br>
+            <input id="senhaCadastro" type="password" placeholder="Escreva sua senha:" required>
+            <br>
+            <label for="cpfCadastro">CPF</label>
+            <br>
+            <input id="cpfCadastro" type="number" placeholder="Escreva seu CPF:" required>
+            <br>
+            <label for="telefoneCadastro">Telefone</label>
+            <br>
+            <input id="telefoneCadastro" type="number" placeholder="Escreva seu número de telefone: required">
+            <br>
+            <label for="dataNascimentoCadastro">Data de Nascimento</label>
+            <br>
+            <input id="dataNascimentoCadastro" max="2026-11-23" type="date" required>
+        </section>
+        <br>
+        <section class="botaoCadastro">
+            <button id="cadastrar" type="submit">
+                <a href="catalogo.html">Cadastrar</a>
+            </button>
+        </section>
+    </main>
     <footer></footer>
 </body>
 </html>
